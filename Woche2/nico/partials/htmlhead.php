@@ -3,7 +3,13 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		
-		<title>Nico's Portfolio | Webdesign und anderes Design</title>
+		<title>
+			<?php 
+			if( isset($pageTitle) ){
+				echo $pageTitle; 
+			}
+			?>
+		</title>
 		<meta name="title" content="Nico's Portfolio | Webdesign und anderes Design">
 		<meta name="description" content="Web- und anderes Design von Nico">
 		<meta name="author" content="Nico">
@@ -16,3 +22,4 @@
 		<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
 		<link rel="stylesheet" href="assets/css/bootstrap.min.css">
 		<link rel="stylesheet" href="assets/css/theme.css">
+		

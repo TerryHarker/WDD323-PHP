@@ -19,6 +19,9 @@ echo '</pre>';
 						<a class="nav-link p-2 <?php echo $dateiname=='portfolio.php'? 'active':''; ?>" href="portfolio.php">Portfolio</a>
 					</li>
 					<li class="nav-item col-6 col-md-auto">
+						<a class="nav-link p-2 <?php echo $dateiname=='blog.php'? 'active':''; ?>" href="blog.php">Blog</a>
+					</li>
+					<li class="nav-item col-6 col-md-auto">
 						<a class="nav-link p-2 <?php echo $dateiname=='contact.php'? 'active':''; ?>" href="contact.php">Contact me</a>
 					</li>
 				</ul>

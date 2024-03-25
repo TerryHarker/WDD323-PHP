@@ -1,3 +1,7 @@
+<?php
+// SEO konfigurieren
+$pageTitle = "Kontaktiere mich";
+?>
 <!DOCTYPE html>
 <html lang="en-gb" dir="ltr" vocab="http://schema.org/">
 	<head>	
