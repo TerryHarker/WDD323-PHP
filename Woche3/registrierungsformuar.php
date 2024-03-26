@@ -37,25 +37,45 @@ if( isset($_POST['prename']) && isset($_POST['surname']) ){
   }
 
   // Passwortregeln: 
-  // testen ob ein Grossbuchstabe im Passwort
+  // testen auf Grossbuchstabe im Passwort
   if( strtolower($_POST['password']) == $_POST['password'] ){
     $hasError = true;
     $errorMessages[] = "Passwort muss mindestens einen Grossbuchstaben enthalten";
   }
-  // testen ob ein Kleinbuchstabe im Passwort
+  // testen auf Kleinbuchstabe im Passwort
   if( strtoupper($_POST['password']) == $_POST['password'] ){
     $hasError = true;
     $errorMessages[] = "Passwort muss mindestens einen Kleinbuchstaben enthalten";
   }
 
-  // Sonderzeichen überprüfen:
-  $pattern = ".([^a-zA-Z][^0-9]^\\.)";
+  // Sonderzeichen überprüfen: (testen: https://regex101.com/)
+  $pattern = "#^(.*)([^a-zA-Z0-9])(.*)#";
+  if( preg_match($pattern, $_POST['password']) == 0 ){
+    $hasError = true;
+    $errorMessages[] = "Passwort muss mindestens ein Sonderzeichen enthalten";
+  }
 
   // Keine Leerzeichen
   if( strpos( $_POST['password'], " " ) !== false ){
     $hasError = true;
     $errorMessages[] = "Passwort darf keine Leerzeichen enthalten";
   }
+
+
+
+  // Bereinigen der Werte, bevor sie weiterverwendet werden
+  //echo 'Vorname vor der Bereinigung: '.$_POST['prename'];
+  $prename = strip_tags( $_POST['prename'] );
+  $surname = strip_tags( $_POST['surname'] );
+  $salutation = strip_tags( $_POST['salutation'] );
+  $zip = strip_tags( $_POST['zip'] );
+  $city = strip_tags( $_POST['city'] );
+  $email = strip_tags( $_POST['email'] );
+  $message = strip_tags( $_POST['message'] );
+  // echo 'Vorname nach Bereinigung: '.$vorname;
+
+  $password = $_POST['password']; // KEINE veränderung, da sonst der User nicht mehr einloggen kann
+  
 
 
   // wenn es keine Fehler gibt, nächster Schritt (versenden)
