@@ -11,8 +11,8 @@ $mailer->isSMTP(); // wir nutzen SMTP
 
 // Verbindungsdaten festlegen für den SMTP Server
 $mailer->Host = 'smtp.gmail.com';
-$mailer->Username = 'citystrolch@gmail.com';
-$mailer->Password = 'rtdc jhdq zooj ipii';
+$mailer->Username = '***';
+$mailer->Password = '***';
 $mailer->SMTPAuth = true;
 $mailer->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; 
 $mailer->Port = 465;
