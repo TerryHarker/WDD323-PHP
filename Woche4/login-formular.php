@@ -1,3 +1,40 @@
+<?php
+// sessionnamen ändern, nicht den bekannten standard verwenden - so ist das auslesen der Session ID aus dem Cookie einiges schwieriger:
+session_name( md5('MEINEIGENERSESSIONNAME') ); 
+
+session_start(); // session Zugriff gewähren - erst nach session_name, aber vor dem ersten Session Zugriff!
+
+$username = 'Terry';
+$password = 'test1234';
+$password_hash = '$2y$10$IoWdMwwFOw6jJekEjz0DcO7yhMC2yES362CgPMgp3vTxKJcA2y.4u'; // hash von 'test1234'
+
+
+if( isset($_POST['username']) && isset($_POST['password']) ){
+    $usernameKorrekt = ($_POST['username']==$username);
+    $passwordKorrekt = password_verify($_POST['password'], $password_hash);
+    if( $usernameKorrekt && $passwordKorrekt ){
+
+        // erfolgreich eingeloggt - wir speichern ein paar Werte in der Session zur Überprüfung
+        $_SESSION['isloggedin'] = true; // login status
+        $_SESSION['userip'] = $_SERVER['REMOTE_ADDR']; // IP Speichern für prüfung
+        $_SESSION['useragent'] = $_SERVER['HTTP_USER_AGENT']; // IP Speichern für prüfung
+        $_SESSION['timestamp'] = time(); // Timestamp für Zeiteinschränkung
+
+        header("location: geschuetzter-bereich.php"); // zum Adminbereich
+
+    }else{
+        $errorMessage = 'Username oder Passwort nicht korrekt';
+    }
+}
+echo '<pre>';
+echo 'POST: ';
+print_r( $_POST );
+
+echo 'SESSION: ';
+print_r($_SESSION);
+
+echo '</pre>';
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,12 +82,15 @@
     </style>
 </head>
 <body>
-    <?php
-    print_r( $_POST );
-    ?>
     <div class="container">
         <div class="inner">
+            <?php
+            if( isset($errorMessage) ){
+                echo '<p style="color:red">'.$errorMessage.'</p>';
+            }
+            ?>
             <form method="POST" action="">
+                
                 <label for="username"><b>Username</b></label>
                 <input type="text" placeholder="Benutzernamen eingeben" name="username" required>
                 

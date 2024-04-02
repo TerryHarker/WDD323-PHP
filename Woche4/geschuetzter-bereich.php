@@ -1,4 +1,43 @@
+<?php
+// sessionnamen ändern, nicht den bekannten standard verwenden - so ist das auslesen der Session ID aus dem Cookie einiges schwieriger:
+session_name( md5('MEINEIGENERSESSIONNAME') ); 
+session_start(); // session Zugriff gewähren - erst nach session_name, aber vor dem ersten Session Zugriff!
 
+$session_lifetime = 10; // sekunden
+$isLoggedIn = false; 
+
+echo '<pre>';
+echo 'SESSION: ';
+print_r($_SESSION);
+echo '</pre>';
+
+// Prüfen
+if( isset($_SESSION['isloggedin']) &&  $_SESSION['isloggedin'] === true){
+    // user ist eingeloggt
+    $isLoggedIn = true;
+    
+    // IP Prüfen (TODO)
+
+    // User Agent Prüfen (TODO)
+
+    // Zeit einschränken:
+    $zeitjetzt = time(); // Vergangene Sekunden seit letztem Zeitstempel
+    if( $zeitjetzt-$_SESSION['timestamp'] > $session_lifetime ){
+        $isLoggedIn = false; // Session zu alt!
+    }
+
+}
+
+
+if($isLoggedIn === false){
+    // user darf nicht zugreifen - zum Formular umleiten
+    header("location: login-formular.php");
+    exit;
+}
+
+// neue session ID für den nächsten Aufruf - so wird eine eventuell geklaute Session ID bei jedem neuen page load ungültig
+session_regenerate_id(); 
+?>
 <!DOCTYPE html>
 <html>
 <head>
