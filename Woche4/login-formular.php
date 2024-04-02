@@ -45,9 +45,12 @@
     </style>
 </head>
 <body>
+    <?php
+    print_r( $_POST );
+    ?>
     <div class="container">
         <div class="inner">
-            <form method="" action="">
+            <form method="POST" action="">
                 <label for="username"><b>Username</b></label>
                 <input type="text" placeholder="Benutzernamen eingeben" name="username" required>
                 
