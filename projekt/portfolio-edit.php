@@ -1,8 +1,28 @@
 <?php
-$isLoggedIn = false;
+require_once( 'config.php' ); // Config werte laden
+require_once( 'library/db.php' ); // DB Funktionen laden
+require_once( 'library/session.php' ); // DB Funktionen laden
+
+session_name( md5(SESSION_NAME) );
+session_start();
+
+
+$isLoggedIn = check_usersession(); // Loginstatus ermitteln
+// var_dump($isLoggedIn);
 
 if($isLoggedIn !== true){
     header('Location: login.php');
+}
+
+// diese Seite ist komplett login-geschützt, alles andere kommt deswegen nach dem login-check
+
+$id = isset($_GET['id']) ? $_GET['id']:0; // id aus GET, und wenn nicht vorhanden, 0
+
+// Anhan der ID können wir herausfinden, ob ein neuer Beitrag erstellt werden soll, oder ein existierender bearbeitet
+if($id > 0){
+	$titel = 'Bearbeiten';
+}else{
+	$titel = 'Erstellen';
 }
 ?>
 <!DOCTYPE html>
@@ -17,24 +37,10 @@ if($isLoggedIn !== true){
 			<div class="container">
 				
 				<div class="mt-5">
-						<h2>Login</h2>
+					<h2><?php echo $titel; ?></h2>
 				</div>
 				<div class="row mt-4">
-                    <?php if($isLoggedIn == false){ ?>
-                    <form action="/login" method="post">
-                        <div class="form-group">
-                            <label for="username">Username:</label>
-                            <input type="text" id="username" name="username" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password:</label>
-                            <input type="password" id="password" name="password" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" value="Login">
-                        </div>
-                    </form>
-                    <?php } ?>
+                   <div>Formular wäre hier...</div>
                 </div>
 			</div>
 		</section>

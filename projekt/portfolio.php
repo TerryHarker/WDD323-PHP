@@ -1,18 +1,29 @@
 <?php
-$isLoggedIn = false; // Loginstatus
+require_once( 'config.php' ); // Config werte laden
+require_once( 'library/db.php' ); // DB Funktionen laden
+require_once( 'library/session.php' ); // DB Funktionen laden
+
+session_name( md5(SESSION_NAME) );
+session_start();
+
+
+$isLoggedIn = check_usersession(); // Loginstatus ermitteln
+// var_dump($isLoggedIn);
 
 
 // Bilder aus Medienordner auslesen:
 $bilderordner = "media";
 $dateien = scandir( $bilderordner ); // gibt ein Array mit Inhalten des Ordners zurück
+/*
 echo '<pre>';
 print_r( $dateien );
 echo '</pre>';
+*/
 
 // echo filetype( $bilderordner."/".$dateien[3] );
 $letzterPunkt = strrpos($dateien[3], ".");
 $dateiendung = substr( $dateien[3], $letzterPunkt );
-echo "Die Dateiendung ist: ".$dateiendung;
+// echo "Die Dateiendung ist: ".$dateiendung;
 
 ?>
 <!DOCTYPE html>
@@ -32,7 +43,6 @@ echo "Die Dateiendung ist: ".$dateiendung;
 				<?php if($isLoggedIn == true){ ?>
 					<div class="row">
 						<div class="col-12 col-sm-6 col-md-3">
-							Admin: 
 							<a href="portfolio-edit.php" class="btn btn-primary">neues projekt</a>
 						</div>
 					</div>

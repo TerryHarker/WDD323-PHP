@@ -1,5 +1,42 @@
 <?php
-$isLoggedIn = false;
+require_once( 'config.php' ); // Config werte laden
+require_once( 'library/db.php' ); // DB Funktionen laden
+require_once( 'library/session.php' ); // DB Funktionen laden
+
+session_name( md5(SESSION_NAME) );
+session_start();
+
+$db = db_connect();
+
+// user meldet sich ab
+if( isset($_GET['action']) && $_GET['action']=='logout' ){
+    delete_usersession();
+}
+
+// Login code
+if( isset($_POST['username']) && isset($_POST['password']) ){
+    
+    // existiert die angegebene E-Mail? User daten holen
+    $query = "SELECT * FROM `user` WHERE `email` = :username LIMIT 1";
+    $statement = $db->prepare( $query );
+    $statement->execute( array( 'username' => $_POST['username']) );
+    $userdaten = $statement->fetch();
+    var_dump( $userdaten );
+
+    // wenn user gefunden, passwort vergleichen
+    if($userdaten !== false){
+        $passwordKorrekt = password_verify($_POST['password'], $userdaten['passwort']);
+        // var_dump($passwordKorrekt);
+
+        if($passwordKorrekt == true){
+            create_usersession();
+        }
+    }
+}
+
+// print_r($_SESSION);
+
+$isLoggedIn = check_usersession();
 ?>
 <!DOCTYPE html>
 <html lang="en-gb" dir="ltr" vocab="http://schema.org/">
@@ -30,7 +67,10 @@ $isLoggedIn = false;
                             <input type="submit"  class="btn btn-primary" value="Login">
                         </div>
                     </form>
-                    <?php } ?>
+                    <?php }else{
+                        echo 'Du bist schon eingeloggt';
+                        echo ' <a href="login.php?action=logout">Abmelden</a>';
+                    } ?>
                 </div>
 			</div>
 		</section>
